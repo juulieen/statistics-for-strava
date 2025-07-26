@@ -15,8 +15,8 @@ final readonly class DbalSegmentRepository extends DbalRepository implements Seg
 {
     public function add(Segment $segment): void
     {
-        $sql = 'INSERT INTO Segment (segmentId, name, sportType, distance, maxGradient, isFavourite, deviceName, climbCategory, countryCode) 
-                VALUES (:segmentId, :name, :sportType, :distance, :maxGradient, :isFavourite, :deviceName, :climbCategory, :countryCode)';
+        $sql = 'INSERT INTO Segment (segmentId, name, sportType, distance, maxGradient, isFavourite, deviceName, climbCategory, countryCode, polyline, raw_data) 
+                VALUES (:segmentId, :name, :sportType, :distance, :maxGradient, :isFavourite, :deviceName, :climbCategory, :countryCode, :polyline, :raw_data)';
 
         $this->connection->executeStatement($sql, [
             'segmentId' => $segment->getId(),
@@ -28,6 +28,8 @@ final readonly class DbalSegmentRepository extends DbalRepository implements Seg
             'deviceName' => $segment->getDeviceName(),
             'climbCategory' => $segment->getClimbCategory(),
             'countryCode' => $segment->getCountryCode(),
+            'polyline' => $segment->getPolyline(),
+            'raw_data' => json_encode($segment->getRawData()),
         ]);
     }
 
@@ -92,7 +94,9 @@ final readonly class DbalSegmentRepository extends DbalRepository implements Seg
             isFavourite: (bool) $result['isFavourite'],
             climbCategory: $result['climbCategory'],
             deviceName: $result['deviceName'],
-            countryCode: $result['countryCode']
+            countryCode: $result['countryCode'],
+            polyline: $result['polyline'] ?? null,
+            rawData: isset($result['raw_data']) ? json_decode($result['raw_data'], true) : null
         );
     }
 

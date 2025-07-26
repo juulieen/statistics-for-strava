@@ -236,6 +236,20 @@ class Strava
     }
 
     /**
+     * Fetch a segment by its Strava ID.
+     * @return array<mixed>
+     */
+    public function getSegment(string $segmentId): array
+    {
+        return Json::decode($this->request('api/v3/segments/' . $segmentId, 'GET', [
+            RequestOptions::HEADERS => [
+                'Authorization' => 'Bearer ' . $this->getAccessToken(),
+            ],
+        ]));
+    }
+
+
+    /**
      * @return array<mixed>
      */
     public function getChallengesOnPublicProfile(string $athleteId): array

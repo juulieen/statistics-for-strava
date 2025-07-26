@@ -9,6 +9,7 @@ use App\Domain\Strava\Activity\Activity;
 use App\Domain\Strava\Activity\ActivityRepository;
 use App\Domain\Strava\Activity\ActivityWithRawDataRepository;
 use App\Domain\Strava\Segment\Segment;
+use App\Domain\Strava\Strava;
 use App\Domain\Strava\Segment\SegmentEffort\SegmentEffort;
 use App\Domain\Strava\Segment\SegmentEffort\SegmentEffortId;
 use App\Domain\Strava\Segment\SegmentEffort\SegmentEffortRepository;
@@ -21,7 +22,7 @@ use App\Infrastructure\ValueObject\Measurement\Length\Meter;
 use App\Infrastructure\ValueObject\String\Name;
 use App\Infrastructure\ValueObject\Time\SerializableDateTime;
 
-final readonly class ImportSegmentsCommandHandler implements CommandHandler
+final class ImportSegmentsCommandHandler implements CommandHandler
 {
     public function __construct(
         private ActivityRepository $activityRepository,
@@ -29,6 +30,7 @@ final readonly class ImportSegmentsCommandHandler implements CommandHandler
         private SegmentRepository $segmentRepository,
         private SegmentEffortRepository $segmentEffortRepository,
         private Countries $countries,
+        private Strava $strava,
     ) {
     }
 
@@ -69,6 +71,19 @@ final readonly class ImportSegmentsCommandHandler implements CommandHandler
                             $this->segmentRepository->update($segment);
                         }
                     } catch (EntityNotFound) {
+                        $command->getOutput()->writeln(sprintf('Fetching details from Strava API for segment %s', $segmentId));
+                        $segmentDetails = null;
+                        try {
+                            $segmentDetails = $this->strava->getSegment((string)$segmentId);
+                            $command->getOutput()->writeln(sprintf('Fetched details for segment %s', $segmentId));
+                            $command->getOutput()->writeln(sprintf('Segment name: %s', var_export($segmentDetails, true)));
+                            $command->getOutput()->writeln(sprintf('Segment name: %s', var_export($segmentDetails['map'], true)));
+                            $command->getOutput()->writeln(sprintf('Segment name: %s', var_export($segmentDetails['map']['polyline'], true)));
+                        } catch (\Throwable $e) {
+                            $command->getOutput()->writeln(sprintf('Warning: Could not fetch details for segment %s: %s', $segmentId, $e->getMessage()));
+                        }
+                        $polylineFromApi = $segmentDetails['map']['polyline'] ?? null;
+                        $command->getOutput()->writeln(sprintf('Creating new segment %s', $segmentId));
                         $segment = Segment::create(
                             segmentId: $segmentId,
                             name: Name::fromString($activitySegment['name']),
@@ -78,7 +93,9 @@ final readonly class ImportSegmentsCommandHandler implements CommandHandler
                             isFavourite: $isFavourite,
                             climbCategory: $activitySegment['climb_category'] ?? null,
                             deviceName: $activity->getDeviceName(),
-                            countryCode: $countryCode
+                            countryCode: $countryCode,
+                            polyline: $polylineFromApi,
+                            rawData: $segmentDetails,
                         );
                         $this->segmentRepository->add($segment);
                         ++$countSegmentsAdded;

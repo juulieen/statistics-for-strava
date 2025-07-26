@@ -38,6 +38,10 @@ final class Segment implements SupportsAITooling
         private readonly ?string $deviceName,
         #[ORM\Column(type: 'string', nullable: true)]
         private readonly ?string $countryCode,
+        #[ORM\Column(type: 'text', nullable: true)]
+        private readonly ?string $polyline,
+        #[ORM\Column(type: 'json', nullable: true)]
+        private readonly ?array $rawData,
     ) {
     }
 
@@ -51,6 +55,8 @@ final class Segment implements SupportsAITooling
         ?int $climbCategory,
         ?string $deviceName,
         ?string $countryCode,
+        ?string $polyline,
+        ?array $rawData,
     ): self {
         return new self(
             segmentId: $segmentId,
@@ -62,7 +68,25 @@ final class Segment implements SupportsAITooling
             climbCategory: $climbCategory,
             deviceName: $deviceName,
             countryCode: $countryCode,
+            polyline: $polyline,
+            rawData: $rawData,
         );
+    }
+
+    public function getRawData(): ?array
+    {
+        return $this->rawData;
+    }
+
+    public function getPolyline(): ?string
+    {
+        return $this->polyline;
+    }
+
+    public function updatePolyline(?string $polyline): self
+    {
+        $this->polyline = $polyline;
+        return $this;
     }
 
     public static function fromState(
@@ -75,6 +99,8 @@ final class Segment implements SupportsAITooling
         ?int $climbCategory,
         ?string $deviceName,
         ?string $countryCode,
+        ?string $polyline,
+        ?array $rawData,
     ): self {
         return new self(
             segmentId: $segmentId,
@@ -86,6 +112,8 @@ final class Segment implements SupportsAITooling
             climbCategory: $climbCategory,
             deviceName: $deviceName,
             countryCode: $countryCode,
+            polyline: $polyline,
+            rawData: $rawData,
         );
     }
 
