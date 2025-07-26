@@ -27,9 +27,10 @@ function highlightTableRow(segmentId) {
     const rows = document.querySelectorAll('.clusterize-content tr');
     rows.forEach(row => {
         if (row.getAttribute('data-segment-id') === segmentId) {
-            row.focus();
             row.style.zIndex = 10;
             row.scrollIntoView({behavior: 'smooth', block: 'center'});
+            row.setAttribute('tabindex', '-1'); // Make it focusable
+            row.focus(); // Focus the row
         } else {
             row.style.zIndex = '';
         }
@@ -52,6 +53,7 @@ function renderSegmentsMap() {
         mapNode = document.getElementById('segments-list-map');
     }
     // Ensure map always has low z-index
+    // This reset the z-index to allow filter to be display on top of the map
     mapNode.style.zIndex = 0;
 
     // Only create the map once

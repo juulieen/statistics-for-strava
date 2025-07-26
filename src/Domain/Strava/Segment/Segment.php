@@ -43,7 +43,7 @@ final class Segment implements SupportsAITooling
         private readonly ?string $countryCode,
         #[ORM\Column(type: 'text', nullable: true)]
         private readonly ?string $polyline,
-        #[ORM\Column(type: 'json', nullable: true)]
+        #[ORM\Column(type: 'json', nullable: true, name: 'raw_data')]
         private readonly ?array $rawData,
     ) {
     }
