@@ -9,12 +9,12 @@ use App\Domain\Strava\Activity\Activity;
 use App\Domain\Strava\Activity\ActivityRepository;
 use App\Domain\Strava\Activity\ActivityWithRawDataRepository;
 use App\Domain\Strava\Segment\Segment;
-use App\Domain\Strava\Strava;
 use App\Domain\Strava\Segment\SegmentEffort\SegmentEffort;
 use App\Domain\Strava\Segment\SegmentEffort\SegmentEffortId;
 use App\Domain\Strava\Segment\SegmentEffort\SegmentEffortRepository;
 use App\Domain\Strava\Segment\SegmentId;
 use App\Domain\Strava\Segment\SegmentRepository;
+use App\Domain\Strava\Strava;
 use App\Infrastructure\CQRS\Command\Command;
 use App\Infrastructure\CQRS\Command\CommandHandler;
 use App\Infrastructure\Exception\EntityNotFound;
@@ -71,14 +71,9 @@ final class ImportSegmentsCommandHandler implements CommandHandler
                             $this->segmentRepository->update($segment);
                         }
                     } catch (EntityNotFound) {
-                        $command->getOutput()->writeln(sprintf('Fetching details from Strava API for segment %s', $segmentId));
                         $segmentDetails = null;
                         try {
-                            $segmentDetails = $this->strava->getSegment((string)$segmentId);
-                            $command->getOutput()->writeln(sprintf('Fetched details for segment %s', $segmentId));
-                            $command->getOutput()->writeln(sprintf('Segment name: %s', var_export($segmentDetails, true)));
-                            $command->getOutput()->writeln(sprintf('Segment name: %s', var_export($segmentDetails['map'], true)));
-                            $command->getOutput()->writeln(sprintf('Segment name: %s', var_export($segmentDetails['map']['polyline'], true)));
+                            $segmentDetails = $this->strava->getSegment((string) $segmentId);
                         } catch (\Throwable $e) {
                             $command->getOutput()->writeln(sprintf('Warning: Could not fetch details for segment %s: %s', $segmentId, $e->getMessage()));
                         }

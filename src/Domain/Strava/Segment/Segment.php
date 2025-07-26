@@ -19,6 +19,9 @@ final class Segment implements SupportsAITooling
     private int $numberOfTimesRidden = 0;
     private ?SerializableDateTime $lastEffortDate = null;
 
+    /**
+     * @param array<mixed> $rawData
+     */
     private function __construct(
         #[ORM\Id, ORM\Column(type: 'string', unique: true)]
         private readonly SegmentId $segmentId,
@@ -45,6 +48,9 @@ final class Segment implements SupportsAITooling
     ) {
     }
 
+    /**
+     * @param array<mixed> $rawData
+     */
     public static function create(
         SegmentId $segmentId,
         Name $name,
@@ -73,6 +79,9 @@ final class Segment implements SupportsAITooling
         );
     }
 
+    /**
+     * @return array<mixed>
+     */
     public function getRawData(): ?array
     {
         return $this->rawData;
@@ -83,12 +92,9 @@ final class Segment implements SupportsAITooling
         return $this->polyline;
     }
 
-    public function updatePolyline(?string $polyline): self
-    {
-        $this->polyline = $polyline;
-        return $this;
-    }
-
+    /**
+     * @param array<mixed> $rawData
+     */
     public static function fromState(
         SegmentId $segmentId,
         Name $name,
