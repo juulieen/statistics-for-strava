@@ -62,19 +62,19 @@ final class ImportStravaDataConsoleCommand extends Command
         $output->writeln('Running database migrations...');
         $this->migrationRunner->run();
 
-        // $this->commandBus->dispatch(new ImportAthlete($output));
-        // $this->commandBus->dispatch(new ImportGear($output));
-        // $this->commandBus->dispatch(new ImportActivities($output));
-        // $this->commandBus->dispatch(new LinkCustomGearToActivities($output));
-        // $this->commandBus->dispatch(new ImportActivitySplits($output));
-        // $this->commandBus->dispatch(new ImportActivityLaps($output));
-        // $this->commandBus->dispatch(new ImportActivityStreams($output));
-        // $this->commandBus->dispatch(new CalculateBestActivityEfforts($output));
+        $this->commandBus->dispatch(new ImportAthlete($output));
+        $this->commandBus->dispatch(new ImportGear($output));
+        $this->commandBus->dispatch(new ImportActivities($output));
+        $this->commandBus->dispatch(new LinkCustomGearToActivities($output));
+        $this->commandBus->dispatch(new ImportActivitySplits($output));
+        $this->commandBus->dispatch(new ImportActivityLaps($output));
+        $this->commandBus->dispatch(new ImportActivityStreams($output));
+        $this->commandBus->dispatch(new CalculateBestActivityEfforts($output));
         $this->commandBus->dispatch(new ImportSegments($output));
-        // $this->commandBus->dispatch(new ImportChallenges($output));
-        // $this->commandBus->dispatch(new CalculateBestStreamAverages($output));
-        // $this->commandBus->dispatch(new CalculateNormalizedPower($output));
-        // $this->commandBus->dispatch(new CalculateCombinedStreams($output));
+        $this->commandBus->dispatch(new ImportChallenges($output));
+        $this->commandBus->dispatch(new CalculateBestStreamAverages($output));
+        $this->commandBus->dispatch(new CalculateNormalizedPower($output));
+        $this->commandBus->dispatch(new CalculateCombinedStreams($output));
 
         $this->connection->executeStatement('VACUUM');
         $output->writeln('Database got vacuumed 🧹');
