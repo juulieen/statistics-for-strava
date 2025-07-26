@@ -88,7 +88,65 @@ function renderSegmentsMap() {
         polylines.push(polyline);
     });
     featureGroup.addTo(leafletMap);
-    leafletMap.fitBounds(featureGroup.getBounds(), {maxZoom: 14});
+    // Center on the main cluster of segments (exclude outliers)
+    if (segments.length > 1) {
+        // Collect all latlngs from all polylines
+        let allLatLngs = [];
+        const segmentLatLngs = segments.map(segment => {
+            const latlngs = L.Polyline.fromEncoded(segment.polyline).getLatLngs();
+            if (Array.isArray(latlngs[0])) {
+                // Multi-part polyline
+                let flat = [];
+                latlngs.forEach(part => flat.push(...part));
+                return flat;
+            } else {
+                return latlngs;
+            }
+        });
+        segmentLatLngs.forEach(arr => allLatLngs.push(...arr));
+        if (allLatLngs.length > 0) {
+            // Compute centroid
+            const centroid = allLatLngs.reduce((acc, latlng) => {
+                acc.lat += latlng.lat;
+                acc.lng += latlng.lng;
+                return acc;
+            }, {lat: 0, lng: 0});
+            centroid.lat /= allLatLngs.length;
+            centroid.lng /= allLatLngs.length;
+
+            // Compute min distance from each segment to centroid
+            function haversine(lat1, lng1, lat2, lng2) {
+                const R = 6371e3;
+                const toRad = x => x * Math.PI / 180;
+                const dLat = toRad(lat2 - lat1);
+                const dLng = toRad(lng2 - lng1);
+                const a = Math.sin(dLat/2)**2 + Math.cos(toRad(lat1))*Math.cos(toRad(lat2))*Math.sin(dLng/2)**2;
+                return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+            }
+            const dists = segmentLatLngs.map(points => {
+                return Math.min(...points.map(pt => haversine(pt.lat, pt.lng, centroid.lat, centroid.lng)));
+            });
+            // Use median distance as robust threshold
+            const sorted = [...dists].sort((a,b)=>a-b);
+            const median = sorted.length % 2 === 0 ? (sorted[sorted.length/2-1]+sorted[sorted.length/2])/2 : sorted[Math.floor(sorted.length/2)];
+            const threshold = median * 2;
+            // Only use segments within threshold for centering
+            let clusterLatLngs = [];
+            segmentLatLngs.forEach((points, i) => {
+                if (dists[i] <= threshold) clusterLatLngs.push(...points);
+            });
+            if (clusterLatLngs.length > 0) {
+                const bounds = L.latLngBounds(clusterLatLngs);
+                leafletMap.fitBounds(bounds, {maxZoom: 14});
+            } else {
+                leafletMap.setView([centroid.lat, centroid.lng], 13);
+            }
+        } else {
+            leafletMap.fitBounds(featureGroup.getBounds(), {maxZoom: 14});
+        }
+    } else {
+        leafletMap.fitBounds(featureGroup.getBounds(), {maxZoom: 14});
+    }
 }
 
 document.addEventListener('dataTableClusterWasChanged', () => {
