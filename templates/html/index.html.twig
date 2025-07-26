@@ -335,6 +335,9 @@
 <script src="{{ relativeUrl(asset('assets/lightgallery/lightgallery.umd.min.js')) }}" type="module"></script>
 <script src="{{ relativeUrl(asset('assets/lightgallery/lightgallery.lg-zoom.min.js')) }}"></script>
 <script src="{{ relativeUrl(asset('assets/chat.js')) }}"  type="module"></script>
+<script src="{{ relativeUrl(asset('assets/segment-map.js')) }}"  type="module"></script>
+<script src="{{ relativeUrl(asset('assets/segment-list-map.js')) }}"  type="module"></script>
+
 <script type="module">
     import LeafletMap from "{{ relativeUrl('/assets/leaflet/leaflet-map.js') }}";
     import Heatmap from "{{ relativeUrl('/assets/leaflet/heatmap.js') }}";
@@ -588,6 +591,13 @@
                 }, {once: true});
 
                 const modalName = modalId.replace(/^\/+/, '').replaceAll('/', '-');
+                document.dispatchEvent(new CustomEvent('modalWasLoaded', {
+                    bubbles: true, cancelable: false, detail: {
+                        modalId: modalId,
+                        modalName: modalName,
+                        modal: modalSkeletonNode
+                    }
+                }));
                 document.dispatchEvent(new CustomEvent('modalWasLoaded.' + modalName, {
                     bubbles: true, cancelable: false, detail: {
                         modal: modalSkeletonNode
