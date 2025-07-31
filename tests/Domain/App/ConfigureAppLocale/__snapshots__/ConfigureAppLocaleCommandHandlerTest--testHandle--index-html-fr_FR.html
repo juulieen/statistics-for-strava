@@ -331,6 +331,9 @@
 <script src="/assets/lightgallery/lightgallery.umd.min.js?0025176c-5652-11ee-923d-02424dd627d5" type="module"></script>
 <script src="/assets/lightgallery/lightgallery.lg-zoom.min.js?0025176c-5652-11ee-923d-02424dd627d5"></script>
 <script src="/assets/chat.js?0025176c-5652-11ee-923d-02424dd627d5" type="module"></script>
+<script src="/assets/segment-map.js?0025176c-5652-11ee-923d-02424dd627d5" type="module"></script>
+<script src="/assets/segment-list-map.js?0025176c-5652-11ee-923d-02424dd627d5" type="module"></script>
+
 <script type="module">
     import LeafletMap from "/assets/leaflet/leaflet-map.js";
     import Heatmap from "/assets/leaflet/heatmap.js";
@@ -584,6 +587,13 @@
                 }, {once: true});
 
                 const modalName = modalId.replace(/^\/+/, '').replaceAll('/', '-');
+                document.dispatchEvent(new CustomEvent('modalWasLoaded', {
+                    bubbles: true, cancelable: false, detail: {
+                        modalId: modalId,
+                        modalName: modalName,
+                        modal: modalSkeletonNode
+                    }
+                }));
                 document.dispatchEvent(new CustomEvent('modalWasLoaded.' + modalName, {
                     bubbles: true, cancelable: false, detail: {
                         modal: modalSkeletonNode
