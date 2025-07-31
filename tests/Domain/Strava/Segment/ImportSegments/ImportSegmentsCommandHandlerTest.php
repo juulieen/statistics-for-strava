@@ -10,6 +10,7 @@ use App\Domain\Strava\Segment\SegmentEffort\SegmentEffortId;
 use App\Domain\Strava\Segment\SegmentEffort\SegmentEffortRepository;
 use App\Domain\Strava\Segment\SegmentId;
 use App\Domain\Strava\Segment\SegmentRepository;
+use App\Domain\Strava\Strava;
 use App\Infrastructure\CQRS\Command\Bus\CommandBus;
 use App\Infrastructure\ValueObject\Measurement\Length\Kilometer;
 use App\Infrastructure\ValueObject\Time\SerializableDateTime;
@@ -17,6 +18,7 @@ use App\Tests\ContainerTestCase;
 use App\Tests\Domain\Strava\Activity\ActivityBuilder;
 use App\Tests\Domain\Strava\Segment\SegmentBuilder;
 use App\Tests\Domain\Strava\Segment\SegmentEffort\SegmentEffortBuilder;
+use App\Tests\Domain\Strava\SpyStrava;
 use App\Tests\SpyOutput;
 use Spatie\Snapshots\MatchesSnapshots;
 
@@ -25,10 +27,12 @@ class ImportSegmentsCommandHandlerTest extends ContainerTestCase
     use MatchesSnapshots;
 
     private CommandBus $commandBus;
+    private SpyStrava $strava;
 
     public function testHandle(): void
     {
         $output = new SpyOutput();
+        $this->strava->setMaxNumberOfCallsBeforeTriggering429(2);
 
         $this->getContainer()->get(ActivityWithRawDataRepository::class)->add(ActivityWithRawData::fromState(
             ActivityBuilder::fromDefaults()
@@ -150,5 +154,6 @@ class ImportSegmentsCommandHandlerTest extends ContainerTestCase
         parent::setUp();
 
         $this->commandBus = $this->getContainer()->get(CommandBus::class);
+        $this->strava = $this->getContainer()->get(Strava::class);
     }
 }

@@ -8,7 +8,9 @@
         "isFavourite": 1,
         "climbCategory": null,
         "deviceName": "Polar",
-        "countryCode": "BE"
+        "countryCode": "BE",
+        "polyline": "ap_dGaleG[RSj@KRa@XYd@[`CQIOw@o@eAGSEe@c@e@Sc@OAGHMEa@Ea@S_@_@YQg@Bc@N}BrCiAh@e@Vc@P]Zg@Fg@?g@@ABRh@Z^?Bg@CCTNZIZO??LS@GTBHWd@SNy@v@[^[d@]^QHu@z@WNg@bAY^oA`@c@DeAp@a@ZW@SFc@XUFYNWh@Ip@?jAMZmASe@Ca@J",
+        "raw_data": "null"
     },
     {
         "segmentId": "segment-1",
@@ -19,6 +21,8 @@
         "isFavourite": 0,
         "climbCategory": null,
         "deviceName": "Zwift",
-        "countryCode": null
+        "countryCode": null,
+        "polyline": "sleiGehzGF\\Kf@m@tAYv@QZMd@MZ@RTJCB[DIP[ZMt@a@pAIb@?CLa@_@bC?xAHrBClATjAB|@TfBDlAFl@CdA@b@GbA@p@KbAGb@KXKRWx@Gd@GH[z@ERUnCc@vAMv@Y~C?d@GFMDKd@@~@Fd@",
+        "raw_data": "{\"id\":35392623,\"resource_state\":3,\"name\":\"canal\",\"activity_type\":\"Run\",\"distance\":1151.9,\"average_grade\":-0.2,\"maximum_grade\":1.2,\"elevation_high\":147.7,\"elevation_low\":145.1,\"start_latlng\":[43.61434,1.450435],\"end_latlng\":[43.616469,1.437887],\"elevation_profile\":\"https:\\/\\/d3o5xota0a1fcr.cloudfront.net\\/v6\\/charts\\/FSFYC5O5LFWBRRQM5T3R3C6EIKKCZXHIB65URVWA7WAHQBZC3WRM2BJZGEYBLQN7XLF2BV76ULFQ3AHZIUTGS2Y=\",\"elevation_profiles\":{\"light_url\":\"https:\\/\\/d3o5xota0a1fcr.cloudfront.net\\/v6\\/charts\\/FSFYC5O5LFWBRRQM5T3R3C6EIKKCZXHIB65URVWA7WAHQBZC3WRM2BJZGEYBLQN7XLF2BV76ULFQ3AHZIUTGS2Y=\",\"dark_url\":\"https:\\/\\/d3o5xota0a1fcr.cloudfront.net\\/v6\\/charts\\/J2AMRGEP2JNMDQAPTIPRSMO6ZDKWN2JASRNSKTOARSUYBCUU2ATNEVZ6JKQXSZVFU4SB7KKUOTTTYEDR7TI36GA=\"},\"climb_category\":0,\"city\":\"Toulouse\",\"state\":\"Haute-Garonne\",\"country\":\"France\",\"private\":false,\"hazardous\":false,\"starred\":false,\"created_at\":\"2023-09-09T18:59:55Z\",\"updated_at\":\"2023-09-09T18:59:56Z\",\"total_elevation_gain\":0,\"map\":{\"id\":\"s35392623\",\"polyline\":\"sleiGehzGF\\\\Kf@m@tAYv@QZMd@MZ@RTJCB[DIP[ZMt@a@pAIb@?CLa@_@bC?xAHrBClATjAB|@TfBDlAFl@CdA@b@GbA@p@KbAGb@KXKRWx@Gd@GH[z@ERUnCc@vAMv@Y~C?d@GFMDKd@@~@Fd@\",\"resource_state\":3},\"effort_count\":46213,\"athlete_count\":10523,\"star_count\":2,\"athlete_segment_stats\":{\"pr_elapsed_time\":277,\"pr_date\":\"2024-05-28\",\"pr_visibility\":\"everyone\",\"pr_activity_id\":11519974000,\"pr_activity_visibility\":\"everyone\",\"effort_count\":9},\"xoms\":{\"kom\":\"3:14\",\"qom\":\"4:11\",\"overall\":\"3:14\",\"destination\":{\"href\":\"strava:\\/\\/segments\\/35392623\\/leaderboard\",\"type\":\"overall\",\"name\":\"All-Time\"}},\"local_legend\":{\"athlete_id\":134119669,\"title\":\"Frederic Mnemoi\",\"profile\":\"https:\\/\\/dgalywyr863hv.cloudfront.net\\/pictures\\/athletes\\/134119669\\/30547647\\/8\\/large.jpg\",\"effort_description\":\"52 efforts in the last 90 days\",\"effort_count\":\"52\",\"effort_counts\":{\"overall\":\"52 efforts\",\"female\":\"24 efforts\"},\"destination\":\"strava:\\/\\/segments\\/35392623\\/local_legend?categories%5B%5D=overall\"}}"
     }
 ]

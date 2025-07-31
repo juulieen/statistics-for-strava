@@ -73,6 +73,7 @@ final class ImportSegmentsCommandHandler implements CommandHandler
                     } catch (EntityNotFound) {
                         $segmentDetails = null;
                         try {
+                            $command->getOutput()->writeln(sprintf('Fetching details for segment %s...', $segmentId));
                             $segmentDetails = $this->strava->getSegment((string) $segmentId);
                         } catch (\Throwable $e) {
                             $command->getOutput()->writeln(sprintf('Warning: Could not fetch details for segment %s: %s', $segmentId, $e->getMessage()));
